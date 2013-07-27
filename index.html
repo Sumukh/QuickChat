@@ -105,7 +105,7 @@ getCoordinates()
 		</div>
 	</div>
 
-<div class="dropdown dropdown-room"><i></i><a href="#" id="currentroom" class="selected currroom">Public</a>
+<div class="dropdown dropdown-room"><i></i><a href="#" id="currentroom" class="selected currroom">Loading</a>
 
 	<div class="dropdown-options"><div class="triangle"></div>
 
@@ -211,11 +211,12 @@ getCoordinates()
 
   // Get a reference to the root of the chat data.
   var roomListRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/');
-  var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/public');
+  var baseURL = 'https://kpg18lw7x0v.firebaseio-demo.com/rooms/';
+  var currentRoom = 'public';
+
+  var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/'+currentRoom);
 
 
-	var baseURL = 'https://kpg18lw7x0v.firebaseio-demo.com/rooms/';
-	var currentRoom = 'public';
 
   var roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
 
@@ -316,7 +317,7 @@ currentRoomRef.on('child_added', function (snapshot) {
   	delete_current_room();
   	disconn.remove();
 
-  	currentRoomRef = new Firebase(baseURL + currentRoom);
+
   	roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
   	var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
 	disconn = new Firebase(newuserpush.toString())
