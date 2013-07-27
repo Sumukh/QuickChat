@@ -399,7 +399,7 @@ nowtime = hours + ":" + minutes + "AM"
     // On chrome, we have to add a timer for updating the title after the focus event
     // else the title will not update
     window.setTimeout(function () {
-      $('title').html('New Messages');
+      $('title').html('LoCo - New Messages');
     },100);
   }
 
