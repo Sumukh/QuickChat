@@ -39,12 +39,6 @@ var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Pa
 if (navigator.appVersion.indexOf("iPhone")!=-1) OSName="iPhone"; // Is this the right indexOf(thing)?
 if (navigator.appVersion.indexOf("iPad")!=-1) OSName="iPad";
 var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
-
-=======
-if (navigator.appVersion.indexOf("iPhone")!=-1) OSName="iPhone"; // Is this the right indexOf(thing)?
-if (navigator.appVersion.indexOf("iPad")!=-1) OSName="iPad";
-var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
->>>>>>> 46cd5f4003cdd10c2490cf8f3eef8eeb2719a3b0
 var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
 
@@ -168,9 +162,9 @@ function add_people(name){
 	<sidebar class="leftsidebar">
 	<div class="online" style="overflow:auto;">
 		<h4 class="inner-padding">ONLINE</h4>
-		<div class="people">
-		</div>
+		<div class="people"></div>
 		<!-- .people -->
+	</div>
 	
 
 	<!-- .online -->
@@ -193,7 +187,7 @@ function add_people(name){
 			<div class="current">
 				<!--current submits-->
 				<div data-user="sumukhsridhara" class="notice chat-box">
-					You have joined the room. Loading the chat room. Press accept geolocation to enter into a location based chat room
+					You have joined the chat room. Type in some text
 				</div>
 			</div>
 		</div>
