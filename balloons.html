@@ -23,12 +23,33 @@
   <script src="./assets/geolocation.js"></script>
 
 <script> 
+function gen_name(){ 
+var OSName="Unknown OS";
+if (navigator.appVersion.indexOf("Win")!=-1) OSName="Win";
+if (navigator.appVersion.indexOf("Mac")!=-1) OSName="Mac";
+if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
+if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra");
+var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
+return username;
+
+}
+function change_name(name){
+	var choosenName = name;
+	$('.username').html('<b></b>'+name)
+
+}
+
+
 function add_message(name,message,time){
 	if (message.length > 0) { 
 $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="./assets/sumukhsridhara.png"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
     $('.chat').scrollTop($('.chat').prop('scrollHeight'));
 
 	}
+}
+function add_people(name){
+	$('.people').append('<a href="#" data-username="'+name+'" data-provider="twitter" class="available"><b></b>'+name+'</a>');
 }
 
 </script>
@@ -40,14 +61,16 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 	<header>
 	<div class="dropdown dropdown-status">
 		<i></i>
-		<a href="#" class="selected available"><b></b>available</a>
+		<a href="#" class="selected available username" style="width:100px">  available</a>
 		<div class="dropdown-options">
 			<div class="triangle">
 			</div>
+			<form name="nameForm" id="nameForm"	 onclick="change_name(document.getElementById('customusername').value);" >
+						<a href="#" class="option create-room">Change your name</a>
+			<input type="text" name="room_name" id="customusername" value="" placeholder="Your Name" style="display: none" class="text">
+			</form>
 			<div class="list">
-				<a data-status="available" href="#" class="option status available current "><b></b>available</a>
-				<a data-status="away" href="#" class="option status away "><b></b>away</a>
-				<a data-status="busy" href="#" class="option status busy "><b></b>busy</a>
+				<a data-status="available" href="#" class="option status available current username"><b></b>available</a>
 				<a href="http://server.sumukh.me:6789/logout" class="option logout">Sign Out</a>
 			</div>
 		</div>
@@ -55,7 +78,11 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 
 <div class="dropdown dropdown-room"><i></i><a href="#" id="currentroom" class="selected currroom">Public</a>
 
-	<div class="dropdown-options"><div class="triangle"></div><form method="POST" action="/create"><a href="#" class="option create-room">Create a room</a><input type="text" name="room_name" value="" placeholder="Name of your room" style="display: none" class="text"></form>		
+	<div class="dropdown-options"><div class="triangle"></div>
+
+	<form method="POST" action="/create">
+	<a href="#" class="option create-room">Create a room</a>
+	<input type="text" name="room_name" value="" placeholder="Name of your room" style="display: none" class="text"></form>		
 			<div class="list" id="list">
 				<a href="#public" title="public" class="option current">Public</a>
 			</div>
@@ -100,7 +127,6 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 	<div class="online">
 		<h4 class="inner-padding">ONLINE</h4>
 		<div class="people">
-			<a href="#" data-username="sumukhsridhara" data-provider="twitter" class="available"><b></b>sumukhsridhara</a>
 		</div>
 		<!-- .people -->
 	</div>
@@ -172,7 +198,9 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 	var currentRoom = 'public';
 
   var roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
-var choosenName = 'Anonymous';
+
+var choosenName = gen_name();
+$('.username').html('<b></b>'+choosenName)
 var idNumber = Math.floor((Math.random()*10000)+1);
 
 
@@ -181,13 +209,19 @@ var idNumber = Math.floor((Math.random()*10000)+1);
   // Add a callback that is triggered for each NEW ROOM
 roomListRef.on('value', function (snapshot) {
   var message = snapshot.val();
-  console.log('test new mesaage');
 
 
-roomUsersRef.push({name:choosenName, id:idNumber});
+var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber,connected: 'yes'});
+var disconn = new Firebase(newuserpush.toString())
+disconn.onDisconnect().remove();
 
 roomUsersRef.on("value", function(snapshot) {
-	console.log(snapshot.val());
+		$('.people').html('');
+
+	for (object in snapshot.val()){
+		add_people(snapshot.child(object).val().name);
+		console.log(snapshot.child(object).val().name);
+	}
 });
 
 

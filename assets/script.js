@@ -234,12 +234,8 @@ $(function() {
     var inputText = $(this).val().trim();
     if(e.which == 13 && inputText.length > 0) {
       console.log(inputText);
-
-      var name = 'Anonymous';
-
-      currentRoomRef.push({name:name, text:inputText});
+      currentRoomRef.push({name:choosenName, text:inputText});
       $('#messageInput').val('');
-      console.log('saddasd')
       $(this).val('');
 
       return false;
