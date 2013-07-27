@@ -33,6 +33,14 @@ var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
 
 }
+function osname (){ 
+var OSName="Unknown OS";
+if (navigator.appVersion.indexOf("Win")!=-1) OSName="Win";
+if (navigator.appVersion.indexOf("Mac")!=-1) OSName="Mac";
+if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
+if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+return OSName;
+}
 function change_name(name){
 	var choosenName = name;
 	$('.username').html('<b></b>'+name)
@@ -192,7 +200,7 @@ function add_people(name){
 var choosenName = gen_name();
 $('.username').html('<b></b>'+choosenName)
 var idNumber = Math.floor((Math.random()*10000)+1);
-var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
+var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber,os:osname()});
 var disconn = new Firebase(newuserpush.toString())
 disconn.onDisconnect().remove();
 
@@ -296,7 +304,7 @@ $('.dropdown-options').css('display','none')
 
 
   	roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
-  	var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
+  	var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber,os:osname()});
 	disconn = new Firebase(newuserpush.toString())
 	disconn.onDisconnect().remove();
 
