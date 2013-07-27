@@ -232,9 +232,8 @@ $(function() {
 
   $(".chat-input input").keypress(function(e) {
     var inputText = $(this).val().trim();
-    if(e.which == 13 && inputText) {
+    if(e.which == 13 && inputText.length > 0) {
       console.log(inputText);
-      add_message('Sum',textParser(inputText),'10 AM');
 
       var name = 'Anonymous';
 
