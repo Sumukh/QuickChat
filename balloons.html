@@ -29,6 +29,7 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 
 	}
 }
+
 </script>
 </head>
 <body class="fancy-theme">
@@ -38,12 +39,7 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 	<header>
 	<div class="dropdown dropdown-status">
 		<i></i>
-		<a href="#" class="selected available"><b></b><div id='roomList'>
-<select>
-  <option value="hi">Turn on Javascript!</option>
-</select>
-</div>
-</a>
+		<a href="#" class="selected available"><b></b>available</a>
 		<div class="dropdown-options">
 			<div class="triangle">
 			</div>
@@ -56,7 +52,14 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 		</div>
 	</div>
 
-<div class="dropdown dropdown-room"><i></i><a href="#" class="selected">asdasd</a><div class="dropdown-options"><div class="triangle"></div><form method="POST" action="/create"><a href="#" class="option create-room">Create a room</a><input type="text" name="room_name" value="" placeholder="Name of your room" style="display: none" class="text"></form><div class="list"><a href="#" class="option current">asdasd</a><a href="/092385" title="YHack!" class="option">YHack!<span class="dropdown-users-online">0</span></a><a href="/f636a6" title="yhack2" class="option">yhack2<span class="dropdown-users-online">1</span></a></div></div></div>	<!-- .dropdown-room -->
+<div class="dropdown dropdown-room"><i></i><a href="#" id="currentroom" class="selected currroom">Public</a>
+
+	<div class="dropdown-options"><div class="triangle"></div><form method="POST" action="/create"><a href="#" class="option create-room">Create a room</a><input type="text" name="room_name" value="" placeholder="Name of your room" style="display: none" class="text"></form>		
+			<div class="list" id="list">
+				<a href="#public" title="public" class="option current">Public</a>
+			</div>
+	</div>
+</div>	<!-- .dropdown-room -->
 	<a href="#invite" style="display:none;" class="button-circle invite fancybox"><strong><span><i></i></span></strong>
 	</a>
 	<div id="invite" style="display: none" class="modal modal-invite">
@@ -122,8 +125,8 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 			</div>
 			<div class="current">
 				<!--current submits-->
-				<div data-user="sumukhsridhara" class="notice">
-					<span class="date">10:26 PM</span>sumukhsridhara has joined the room.
+				<div data-user="sumukhsridhara" class="notice chat-box">
+					sumukhsridhara has joined the room.
 				</div>
 				<div data-user="sumukhsridhara" data-provider="twitter" data-type="chat" class="chat-box">
 					<div class="avatar avatar-twitter">
@@ -132,7 +135,6 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 					</div>
 					<h5>sumukhsridhara</h5>
 					<p>
-						<span class="date">10:26 PM</span>asdasd
 					</p>
 				</div>
 			</div>
@@ -149,7 +151,7 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 	</div>
 </div>
 <!-- .wrap-->
-<span id="room_name" style="display:none">asdasd</span>
+<span id="room_name" style="display:none">Public</span>
 <span id="username" style="display:none">sumukhsridhara</span>
 <span id="provider" style="display:none">twitter</span>
 <script defer="" src="./assets/jquery.fancybox.pack.js"></script>
@@ -158,6 +160,8 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
 </script>
 <script defer="" src="./assets/script.js"></script>
 <script>
+
+
   // Get a reference to the root of the chat data.
   var roomListRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/');
   var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/public');
@@ -167,39 +171,47 @@ var currentRoom = 'public';
 
   // When the user presses enter on the message input, write the message to firebase.
 
-  // Add a callback that is triggered for each chat message.
+  // Add a callback that is triggered for each NEW ROOM
 roomListRef.on('value', function (snapshot) {
   var message = snapshot.val();
   console.log('test new mesaage');
 
-	var roomList = '<select id="roomList">';
+	var roomList = '';
 	for (var key in snapshot.val()) {
 		if (key == currentRoom) {
-			roomList = roomList + '<option value="' + key + '" selected="selected">' + key + '</option>';
+			roomList = roomList + '<a href="#' + key + '" title="' + key + '" class="option current">' + key + '</a>';
 		}
 		else {
-			roomList = roomList + '<option value="' + key + '">' + key + '</option>';
+			roomList = roomList + '<a href="#' + key + '" title="' + key + '" class="option">' + key + '</a>';
 		}
 	}
-	roomList = roomList + '</select>';
 	//console.log(roomList);
 	//console.log(snapshot.child('yahoo').name());
-	document.getElementById('roomList').innerHTML = roomList;
+	document.getElementById('list').innerHTML = roomList;
+	  $('.list a').click(function(){
+	      $('.list a').removeClass('current')
+	      var roomname = $(this).attr("title");
+	      $('.currroom').text(roomname)
+	      console.log("clicked" + roomname)
+	      changeRoom(roomname)
+      $(this).addClass('current');
+  });
+
   });
 
 currentRoomRef.on('value', function (snapshot) {
   var messages = snapshot.val();
-  //console.log(messages);
-  for (var key in snapshot.val()) {
-   // displayChatMessage(key,messages[key]);
-  }
+  console.log("CURRENT ROOM REF ON CALLED");
+  console.log(messages)
+ // for (var key in messages) {
+  //	displayChatMessage(key.name,messages.text);
+  //}
   //console.log(typeof(snapshot.val()));
 });
 
 currentRoomRef.on('child_added', function (snapshot) {
-	console.log('CHILD ADDDED BRO')
   var messages = snapshot.val();
-  console.log(messages);
+	console.log('Child Added '+messages.text)
   displayChatMessage(messages.name,messages.text);
   /*
   for (var key in snapshot.val()) {
@@ -208,7 +220,6 @@ currentRoomRef.on('child_added', function (snapshot) {
     console.log(key[name]);
   }
   */
-  console.log(typeof(snapshot.val()));
 });
 
 
@@ -222,16 +233,50 @@ currentRoomRef.on('child_added', function (snapshot) {
   //  $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
   };
 
-  $('#roomList').change(function() {
+/*  $('#roomList').change(function() {
   	console.log("changed to room: " + $("#roomList option:selected").text());
   	currentRoom = $("#roomList option:selected").text();
   	currentRoomRef = new Firebase(baseURL + currentRoom);
     //console.log(currentRoomRef);
 
   //clear message box
+}); */ 
+
+  function changeRoom(roomid){
+  	 console.log("changed to room: " + roomid);
+  	currentRoom = roomid;
+  	delete_current_room();
+  	currentRoomRef = new Firebase(baseURL + currentRoom);
+  	currentRoomRef.on('value', function (snapshot) {
+  	var messages = snapshot.val();
+  console.log(messages);
+	  for (var messages in snapshot.val()) {
+	  	displayChatMessage(messages.name,messages.text);
+	  }
+  //console.log(typeof(snapshot.val()));
 });
 
+  }
+  function delete_current_room(){
+  	$('.chat-box').remove();
+  }
+
 </script>
+	<script>
+	$(document).ready(function(){
+
+  $('.list a').click(function(){
+      $('.list a').removeClass('current')
+      var roomname = $(this).attr("title");
+      $('.currroom').text(roomname)
+      console.log(roomname)
+      changeRoom(roomname)
+      $(this).addClass('current');
+  });
+
+});
+	</script>
+
 <script id="hiddenlpsubmitdiv" style="display: none;"></script>
 </body>
 </html>

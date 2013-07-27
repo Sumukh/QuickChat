@@ -245,6 +245,14 @@ $(function() {
       return false;
     }
   });
+  $('.list a').click(function(){
+      $('.list a').removeClass('current')
+      var roomname = $(this).attr("title");
+      $('.currroom').text(roomname)
+      console.log(roomname)
+      changeRoom(roomname)
+      $(this).addClass('current');
+  });
 
   $('.dropdown-status .list a.status').click(function(e) {
     socket.emit('set status', {
