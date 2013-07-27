@@ -86,10 +86,10 @@ currentRoomRef.on('child_added', function (snapshot) {
   };
 
   $('#roomList').change(function() {
-	//console.log("changed to room: " + $("#roomList option:selected").text());
-	currentRoom = $("#roomList option:selected").text();
-	currentRoomRef = new Firebase(baseURL + currentRoom);
-  //console.log(currentRoomRef);
+  	console.log("changed to room: " + $("#roomList option:selected").text());
+  	currentRoom = $("#roomList option:selected").text();
+  	currentRoomRef = new Firebase(baseURL + currentRoom);
+    //console.log(currentRoomRef);
 
   //clear message box
 });

@@ -233,14 +233,13 @@ $(function() {
   $(".chat-input input").keypress(function(e) {
     var inputText = $(this).val().trim();
     if(e.which == 13 && inputText) {
-      var chunks = inputText.match(/.{1,1024}/g)
-        , len = chunks.length;
+      console.log(inputText);
+      add_message('Sum',textParser(inputText),'10 AM');
 
-      for(var i = 0; i<len; i++) {
-        socket.emit('my msg', {
-          msg: chunks[i]
-        });
-      }
+      var name = 'Anonymous';
+
+      currentRoomRef.push({name:name, text:inputText});
+      $('#messageInput').val('');
 
       $(this).val('');
 
