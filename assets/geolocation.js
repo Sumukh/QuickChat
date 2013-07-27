@@ -4,9 +4,9 @@ function errorHandler(err) {
     }else if( err.code == 2) {
       console.log("Error: Position is unavailable!");
       $.get("http://ipinfo.io", function(response) {
-    console.log(response.ip);
-    changeRoom(response.ip.split(".").join("_"));
-      }, "jsonp");
+      console.log(response.ip);
+      changeRoom(response.ip.split(".").join("_"));
+        }, "jsonp");
 
   }
 }

@@ -237,7 +237,6 @@ $(function() {
       currentRoomRef.push({name:choosenName, text:inputText});
       $('#messageInput').val('');
       $(this).val('');
-
       return false;
     }
   });
@@ -383,10 +382,7 @@ $(function() {
     // On chrome, we have to add a timer for updating the title after the focus event
     // else the title will not update
     window.setTimeout(function () {
-      $('title').html(ich.title_template({
-        count: afkDeliveredMessages,
-        roomName: roomName
-      }, true));
+      $('title').html('New Messages');
     },100);
   }
 

@@ -20,7 +20,6 @@
   <script src="https://cdn.firebase.com/v0/firebase.js"></script>
 
 <script src="./assets/modernizr-2.5.3.min.js"></script>
-  <script src="./assets/geolocation.js"></script>
 
 <script> 
 function gen_name(){ 
@@ -52,6 +51,36 @@ function add_people(name){
 	$('.people').append('<a href="#" data-username="'+name+'" data-provider="twitter" class="available"><b></b>'+name+'</a>');
 }
 
+function errorHandler(err) {
+    if(err.code == 1) {
+      console.log("Error: Access is denied!");
+    }else if( err.code == 2) {
+      console.log("Error: Position is unavailable!");
+      $.get("http://ipinfo.io", function(response) {
+      console.log(response.ip);
+      changeRoom(response.ip.split(".").join("_"));
+        }, "jsonp");
+
+  }
+}
+function getCoordinates(callback){
+  if (navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(position){
+        console.log(position);
+        $.get('https://api.foursquare.com/v2/venues/search?ll='+position.coords.latitude+','+position.coords.longitude+'&oauth_token=FYQ2RTFDZSS4PGH2QDQ5EMVU4HYLWBCZR02UMZIJ5P1CCIEU&v=20130727',foursquare)
+        return position;
+      }, errorHandler);
+  }
+}
+function foursquare(data) { 
+  var name = data.response.venues[0].name;
+  var venuesid = data.response.venues[0].id;
+  changeRoom(name);
+  console.log('SHOULD BE CHANGING ROOM')
+  console.log(data.response.venues[0].name); console.log(data.response.venues[0].id); 
+} 
+getCoordinates()
+
 </script>
 </head>
 <body class="fancy-theme">
@@ -61,7 +90,7 @@ function add_people(name){
 	<header>
 	<div class="dropdown dropdown-status">
 		<i></i>
-		<a href="#" class="selected available username" style="width:100px">  available</a>
+		<a href="#" class="selected available username" style="width:120px">  available</a>
 		<div class="dropdown-options">
 			<div class="triangle">
 			</div>
@@ -142,7 +171,7 @@ function add_people(name){
 		<!-- .files-container -->
 	</div>
 	<!-- .files -->
-	<a href="https://github.com/gravityonmars/Balloons.IO" target="_blank" class="sidebar-open-source">get the code from github</a>
+	<a href="https://github.com/gravityonmars/Balloons.IO" target="_blank" class="sidebar-open-source">Open Source</a>
 	</sidebar>
 	<div role="main" class="content">
 		<div class="chat">
@@ -153,16 +182,7 @@ function add_people(name){
 			<div class="current">
 				<!--current submits-->
 				<div data-user="sumukhsridhara" class="notice chat-box">
-					sumukhsridhara has joined the room.
-				</div>
-				<div data-user="sumukhsridhara" data-provider="twitter" data-type="chat" class="chat-box">
-					<div class="avatar avatar-twitter">
-						<img src="./assets/sumukhsridhara.png">
-						<a href="https://twitter.com/sumukhsridhara" target="_blank"></a>
-					</div>
-					<h5>sumukhsridhara</h5>
-					<p>
-					</p>
+					You have joined the room. Loading the chat room. Press accept geolocation to enter into a location based chat room
 				</div>
 			</div>
 		</div>
@@ -202,7 +222,18 @@ function add_people(name){
 var choosenName = gen_name();
 $('.username').html('<b></b>'+choosenName)
 var idNumber = Math.floor((Math.random()*10000)+1);
+var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
+var disconn = new Firebase(newuserpush.toString())
+disconn.onDisconnect().remove();
 
+roomUsersRef.on("value", function(snapshot) {
+		$('.people').html(' ');
+		
+	for (object in snapshot.val()){
+		add_people(snapshot.child(object).val().name);
+		console.log(snapshot.child(object).val().name);
+	}
+});
 
   // When the user presses enter on the message input, write the message to firebase.
 
@@ -210,19 +241,6 @@ var idNumber = Math.floor((Math.random()*10000)+1);
 roomListRef.on('value', function (snapshot) {
   var message = snapshot.val();
 
-
-var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
-var disconn = new Firebase(newuserpush.toString())
-disconn.onDisconnect().remove();
-
-roomUsersRef.on("value", function(snapshot) {
-		$('.people').clear();
-
-	for (object in snapshot.val()){
-		add_people(snapshot.child(object).val().name);
-		console.log(snapshot.child(object).val().name);
-	}
-});
 
 
 	var roomList = '';
@@ -293,17 +311,28 @@ currentRoomRef.on('child_added', function (snapshot) {
 }); */ 
 
   function changeRoom(roomid){
-  	 console.log("changed to room: " + roomid);
+  	console.log("changed to room: " + roomid);
   	currentRoom = roomid;
   	delete_current_room();
+  	disconn.remove();
+
   	currentRoomRef = new Firebase(baseURL + currentRoom);
   	roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
+  	var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
+	disconn = new Firebase(newuserpush.toString())
+	disconn.onDisconnect().remove();
+	roomUsersRef.on("value", function(snapshot) {
+			$('.people').html(' ');
+			
+		for (object in snapshot.val()){
+			add_people(snapshot.child(object).val().name);
+			console.log(snapshot.child(object).val().name);
+		}
+	});
+
     $('.list a').removeClass('current')
     $('.currroom').text(roomid)
     $("select[title='"+roomid+"']").addClass('current')
-	var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
-	var disconn = new Firebase(newuserpush.toString())
-	disconn.onDisconnect().remove();
 
 	currentRoomRef.on('child_added', function (snapshot) {
 	  var messages = snapshot.val();
