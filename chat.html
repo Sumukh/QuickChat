@@ -56,12 +56,31 @@ currentRoomRef.on('value', function (snapshot) {
   var messages = snapshot.val();
   //console.log(messages);
   for (var key in snapshot.val()) {
-    displayChatMessage(key,messages[key]);
+   // displayChatMessage(key,messages[key]);
   }
   //console.log(typeof(snapshot.val()));
 });
 
+currentRoomRef.on('child_added', function (snapshot) {
+  var messages = snapshot.val();
+  console.log(messages);
+  displayChatMessage(messages.name,messages.text);
+  /*
+  for (var key in snapshot.val()) {
+    //displayChatMessage(key,messages[key]);
+    displayChatMessage(key.name,key.text);
+    console.log(key[name]);
+  }
+  */
+  console.log(typeof(snapshot.val()));
+});
+
+
+
   function displayChatMessage(name, text) {
+
+//CLEAR MESSAGE BOX
+
     $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
     $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
   };
