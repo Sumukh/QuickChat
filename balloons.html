@@ -167,8 +167,14 @@ $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" da
   var roomListRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/');
   var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/public');
 
-var baseURL = 'https://kpg18lw7x0v.firebaseio-demo.com/rooms/';
-var currentRoom = 'public';
+
+	var baseURL = 'https://kpg18lw7x0v.firebaseio-demo.com/rooms/';
+	var currentRoom = 'public';
+
+  var roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
+var choosenName = 'Anonymous';
+var idNumber = Math.floor((Math.random()*10000)+1);
+
 
   // When the user presses enter on the message input, write the message to firebase.
 
@@ -176,6 +182,14 @@ var currentRoom = 'public';
 roomListRef.on('value', function (snapshot) {
   var message = snapshot.val();
   console.log('test new mesaage');
+
+
+roomUsersRef.push({name:choosenName, id:idNumber});
+
+roomUsersRef.on("value", function(snapshot) {
+	console.log(snapshot.val());
+});
+
 
 	var roomList = '';
 	for (var key in snapshot.val()) {
@@ -249,6 +263,8 @@ currentRoomRef.on('child_added', function (snapshot) {
   	currentRoom = roomid;
   	delete_current_room();
   	currentRoomRef = new Firebase(baseURL + currentRoom);
+  	roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
+  	roomUsersRef.push({name:choosenName, id:idNumber});
 	currentRoomRef.on('child_added', function (snapshot) {
 	  var messages = snapshot.val();
 	  displayChatMessage(messages.name,messages.text);
