@@ -3,6 +3,11 @@ function errorHandler(err) {
       console.log("Error: Access is denied!");
     }else if( err.code == 2) {
       console.log("Error: Position is unavailable!");
+      $.get("http://ipinfo.io", function(response) {
+    console.log(response.ip);
+    changeRoom(response.ip);
+      }, "jsonp");
+
   }
 }
 function getCoordinates(callback){
