@@ -15,11 +15,7 @@
 </select>
 </div>
 
-
 <script>
-
-
-
   // Get a reference to the root of the chat data.
   var roomListRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/');
   var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/public');
@@ -38,8 +34,8 @@ var currentRoom = 'public';
   });
 
   // Add a callback that is triggered for each chat message.
-  roomListRef.on('value', function (snapshot) {
-    var message = snapshot.val();
+roomListRef.on('value', function (snapshot) {
+  var message = snapshot.val();
 
 	var roomList = '<select id="roomList">';
 	for (var key in snapshot.val()) {
@@ -51,21 +47,33 @@ var currentRoom = 'public';
 		}
 	}
 	roomList = roomList + '</select>';
-	console.log(roomList);
+	//console.log(roomList);
 	//console.log(snapshot.child('yahoo').name());
 	document.getElementById('roomList').innerHTML = roomList;
-
-    $('<div/>').text(message.text).prepend($('<em/>')
-      .text(message.name+': ')).appendTo($('#messagesDiv'));
-    $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
   });
+
+currentRoomRef.on('value', function (snapshot) {
+  var messages = snapshot.val();
+  //console.log(messages);
+  for (var key in snapshot.val()) {
+    displayChatMessage(key,messages[key]);
+  }
+  //console.log(typeof(snapshot.val()));
+});
+
+  function displayChatMessage(name, text) {
+    $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+    $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+  };
 
   $('#roomList').change(function() {
-	console.log("changed to room: " + $("#roomList option:selected").text());
+	//console.log("changed to room: " + $("#roomList option:selected").text());
 	currentRoom = $("#roomList option:selected").text();
 	currentRoomRef = new Firebase(baseURL + currentRoom);
-	console.log(currentRoomRef);
-  });
+  //console.log(currentRoomRef);
+
+  //clear message box
+});
 
 </script>
 </body>
