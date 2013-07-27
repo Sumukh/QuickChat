@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="./assets/jquery.fancybox.css">
 <link rel="stylesheet" href="./assets/style.css">
 <script src="./assets/jquery.min.js"></script>
+<script src="./assets/jquery.cookie.js"></script>
 <style type="text/css">
 
 </style>
@@ -34,13 +35,9 @@ if (navigator.appVersion.indexOf("Mac")!=-1) {OSName="Mac"};
 if (navigator.appVersion.indexOf("iPhone")!=-1) {$('.leftsidebar').css('width','100px'); $('.dropdown-room').css('width','130px'); $('.dropdown-status').css('width','130px'); OSName="iPhone";}
 if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
-<<<<<<< HEAD
-var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Sumukh", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
-=======
 if (navigator.appVersion.indexOf("iPhone")!=-1) OSName="iPhone"; // Is this the right indexOf(thing)?
 if (navigator.appVersion.indexOf("iPad")!=-1) OSName="iPad";
 var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
->>>>>>> 0b596052e883c40d41bb64440cf436e2e528e810
 var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
 
@@ -54,10 +51,30 @@ if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
 return OSName;
 }
 $(document).ready(function(){
+  $("#createRoom").submit(function(e){
+    e.preventDefault();
+    changeRoom($("#room_name").val());
+    $(this)[0].reset();
+  });
   $("#nameForm").submit(function(e){
     e.preventDefault();
-    change_name($("#customusername").val());
+    var new_name = $("#customusername").val();
+    change_name(new_name);
     $(".dropdown a.selected").removeClass("active").next(".dropdown-options").hide();
+    var uid = $.cookie("user_id");
+    var old_name = $.cookie("user_name");
+    $.cookie("user_name", new_name);
+    var old_names = $.cookie("old_names") && $.cookie("old_names").split(",")
+    var old_names = old_names && old_names.push(old_name) && old_names.join(",");
+    var old_names = old_names || old_name;
+    $.cookie("old_names", old_names);
+
+    $("[data-user-id="+uid+"]").each(function(i, el){
+      $el  = $(el);
+      var old_html = $el.html();
+      var new_html = old_html.replace(old_name, new_name);
+      $el.html(new_html);
+    });
   })
 });
 function change_name(name){
@@ -76,14 +93,23 @@ function add_message(name,message,time, os){
 		case "iPhone": filepath = "./assets/iphone.png"; break;
 		case "iPad": filepath = "./assets/ipad.png"; break;
 	}
-$('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="' + filepath + '"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
 
+  var old_names = $.cookie("old_names") && $.cookie("old_names").split(',');
+  var old_names = old_names || [];
+  if($.inArray(name, old_names) > 0 || name == $.cookie("user_name") ){
+    name = $.cookie("user_name") || name;
+  }
+  id = $.cookie("user_id");
+$('.chat .current').append('<div data-user="'+name+'" + data-user-id="'+id+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="'+filepath+'"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
     $('.chat').scrollTop($('.chat').prop('scrollHeight'));
 
 	}
 }
-function add_people(name){
-	$('.people').append('<a href="#" data-username="'+name+'" data-provider="twitter" class="available"><b></b>'+name+'</a>');
+function add_people(id, name){
+  if (id == $.cookie("user_id") ) {
+    name = $.cookie("user_name") || name;
+  }
+	$('.people').append('<a href="#" data-user-id="'+id+'" data-username="'+name+'" data-provider="twitter" class="available"><b></b>'+name+'</a>');
 }
 
 </script>
@@ -114,9 +140,9 @@ function add_people(name){
 
 	<div class="dropdown-options"><div class="triangle"></div>
 
-	<form method="POST" action="/create">
+	<form id="createRoom" method="POST" action="/create">
 	<a href="#" class="option create-room">Create a room</a>
-	<input type="text" name="room_name" value="" placeholder="Name of your room" style="display: none" class="text"></form>		
+	<input type="text" name="room_name" id="room_name" value="" placeholder="Name of your room" style="display: none" class="text"></form>		
 			<div class="list" id="list">
 				<a href="#public" title="public" class="option current">Public</a>
 			</div>
@@ -231,6 +257,9 @@ var choosenName = gen_name();
 $('.username').html('<b></b>'+choosenName)
 var idNumber = Math.floor((Math.random()*10000)+1);
 var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber,os:osname()});
+$.cookie('user_name', choosenName);
+$.cookie('user_id',idNumber);
+$.cookie('os',osname());
 var disconn = new Firebase(newuserpush.toString())
 disconn.onDisconnect().remove();
 
@@ -238,7 +267,8 @@ roomUsersRef.on("value", function(snapshot) {
 		$('.people').html(' ');
 		
 	for (object in snapshot.val()){
-		add_people(snapshot.child(object).val().name);
+    var user = snapshot.child(object).val();
+		add_people(user.id, user.name);
 		console.log(snapshot.child(object).val().name);
 	}
 });
@@ -353,8 +383,9 @@ currentRoomRef.on('child_added', function (snapshot) {
 			$('.people').html(' ');
 			
 		for (object in snapshot.val()){
-			add_people(snapshot.child(object).val().name);
-			console.log(snapshot.child(object).val().name);
+      var user = snapshot.child(object).val();
+			add_people(user.id , user.name);
+			console.log(user.name);
 		}
 	});
 
