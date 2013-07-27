@@ -283,7 +283,7 @@ currentRoomRef.on('child_added', function (snapshot) {
   function changeRoom(roomid){
   	console.log("changed to room: " + roomid);
   	 delete_current_room();
-
+$('.dropdown-options').css('display','none')
   	currentRoom = roomid;
 
   	//disconn.remove();
