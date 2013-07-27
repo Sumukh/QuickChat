@@ -53,10 +53,15 @@ function change_name(name){
   $('.username').html('<b></b>'+name);
 }
 
-
-function add_message(name,message,time){
-	if (message.length > 0) { 
-$('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="./assets/sumukhsridhara.png"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
+function add_message(name,message,time, os){
+	if (message.length > 0) {
+	var filepath = "./assets/sumukhsridhara.png"
+	switch(os) {
+		case "mac": filepath = "./assets/apple.png"; break; 
+		case "win": filepath = "./assets/microsoft.png"; break; 
+		case "linux": filepath = "./assets/linux.png"; break; 
+	}
+$('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="' + filepath + '"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
     $('.chat').scrollTop($('.chat').prop('scrollHeight'));
 
 	}
@@ -265,7 +270,7 @@ currentRoomRef.on('value', function (snapshot) {
 currentRoomRef.on('child_added', function (snapshot) {
   var messages = snapshot.val();
 	console.log('Child Added '+messages.text)
-  displayChatMessage(messages.name,messages.text);
+  displayChatMessage(messages.name,messages.text,messages.time,messages.os);
   /*
   for (var key in snapshot.val()) {
     //displayChatMessage(key,messages[key]);
@@ -277,11 +282,11 @@ currentRoomRef.on('child_added', function (snapshot) {
 
 
 
-  function displayChatMessage(name, text) {
+  function displayChatMessage(name, text, time, os) {
 
 //CLEAR MESSAGE BOX
 
-	add_message(name,text,'10 AM');
+	add_message(name,text,'10 AM',os);
  //   $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
   //  $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
   };
