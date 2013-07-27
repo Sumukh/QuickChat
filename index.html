@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)http://server.sumukh.me:6789/b50f76# -->
+<html lang="en" class=" js no-flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<!-- <![endif]-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<title>asdasd - Balloons.IO</title>
+<meta name="description" content="">  
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://s3.amazonaws.com/social-buttons/css/social-buttons.css">
+<link rel="stylesheet" href="http://server.sumukh.me:6789/js/libs/fancy-box/jquery.fancybox.css">
+<link rel="stylesheet" href="http://server.sumukh.me:6789/css/style.css">
+<script src="./assets/jquery.min.js"></script>
+<style type="text/css">
+
+</style>
+  <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+
+<script src="./assets/modernizr-2.5.3.min.js"></script>
+  <script src="./assets/geolocation.js"></script>
+
+<script> 
+function gen_name(){ 
+var OSName="Unknown OS";
+if (navigator.appVersion.indexOf("Win")!=-1) OSName="Win";
+if (navigator.appVersion.indexOf("Mac")!=-1) OSName="Mac";
+if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
+if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra");
+var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
+return username;
+
+}
+function change_name(name){
+	var choosenName = name;
+	$('.username').html('<b></b>'+name)
+
+}
+
+
+function add_message(name,message,time){
+	if (message.length > 0) { 
+$('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="./assets/sumukhsridhara.png"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
+    $('.chat').scrollTop($('.chat').prop('scrollHeight'));
+
+	}
+}
+function add_people(name){
+	$('.people').append('<a href="#" data-username="'+name+'" data-provider="twitter" class="available"><b></b>'+name+'</a>');
+}
+
+</script>
+</head>
+<body class="fancy-theme">
+<div class="color-line">
+</div>
+<div class="wrap">
+	<header>
+	<div class="dropdown dropdown-status">
+		<i></i>
+		<a href="#" class="selected available username" style="width:100px">  available</a>
+		<div class="dropdown-options">
+			<div class="triangle">
+			</div>
+			<form name="nameForm" id="nameForm"	 onclick="change_name(document.getElementById('customusername').value);" >
+						<a href="#" class="option create-room">Change your name</a>
+			<input type="text" name="room_name" id="customusername" value="" placeholder="Your Name" style="display: none" class="text">
+			</form>
+			<div class="list">
+				<a data-status="available" href="#" class="option status available current username"><b></b>available</a>
+				<a href="http://server.sumukh.me:6789/logout" class="option logout">Sign Out</a>
+			</div>
+		</div>
+	</div>
+
+<div class="dropdown dropdown-room"><i></i><a href="#" id="currentroom" class="selected currroom">Public</a>
+
+	<div class="dropdown-options"><div class="triangle"></div>
+
+	<form method="POST" action="/create">
+	<a href="#" class="option create-room">Create a room</a>
+	<input type="text" name="room_name" value="" placeholder="Name of your room" style="display: none" class="text"></form>		
+			<div class="list" id="list">
+				<a href="#public" title="public" class="option current">Public</a>
+			</div>
+	</div>
+</div>	<!-- .dropdown-room -->
+	<a href="#invite" style="display:none;" class="button-circle invite fancybox"><strong><span><i></i></span></strong>
+	</a>
+	<div id="invite" style="display: none" class="modal modal-invite">
+		<h2>Invite people to join the room
+		<div class="modal-content">
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			</p>
+		</div>
+		<div class="tweet-user">
+			<input>
+		</div>
+		<div class="tweet-user">
+			<input>
+		</div>
+		<div class="tweet-user">
+			<input type="text" name="" value="" class="error">
+		</div>
+		<div class="tweet-user">
+			<input>
+		</div>
+		<div class="tweet-user">
+			<input>
+		</div>
+		<div class="tweet-user">
+			<input>
+		</div>
+		</h2>
+		<!-- .modal-content <div class="modal-footer"><a href="#" class="button invite-people">Invite these people</a></div>-->
+		<!-- .modal-footers <!-- #invite -->
+		--&gt;
+	</div>
+	<a href="#" style="display:none;" class="button-circle lock"><strong><span><i></i></span></strong>
+	</a>
+	</header>
+	<sidebar>
+	<div class="online">
+		<h4 class="inner-padding">ONLINE</h4>
+		<div class="people">
+		</div>
+		<!-- .people -->
+	</div>
+	<!-- .online -->
+	<div class="files">
+		<h3>Files</h3>
+		<div class="files-container">
+			<a href="#" class="picture"><span><i></i></span>filename-example.dmg</a>
+			<a href="#" class="file"><span><i></i></span>filename-example.dmg</a>
+			<a href="#" class="picture"><span><i></i></span>filename-example.dmg</a>
+			<a href="#" class="file"><span><i></i></span>filename-example.dmg</a>
+		</div>
+		<!-- .files-container -->
+	</div>
+	<!-- .files -->
+	<a href="https://github.com/gravityonmars/Balloons.IO" target="_blank" class="sidebar-open-source">get the code from github</a>
+	</sidebar>
+	<div role="main" class="content">
+		<div class="chat">
+			<!-- chat-content-->
+			<div class="history">
+				<!--historical submits-->
+			</div>
+			<div class="current">
+				<!--current submits-->
+				<div data-user="sumukhsridhara" class="notice chat-box">
+					sumukhsridhara has joined the room.
+				</div>
+				<div data-user="sumukhsridhara" data-provider="twitter" data-type="chat" class="chat-box">
+					<div class="avatar avatar-twitter">
+						<img src="./assets/sumukhsridhara.png">
+						<a href="https://twitter.com/sumukhsridhara" target="_blank"></a>
+					</div>
+					<h5>sumukhsridhara</h5>
+					<p>
+					</p>
+				</div>
+			</div>
+		</div>
+		<!-- .chat -->
+		<div class="line-chat">
+		</div>
+		<div class="line-chat second">
+		</div>
+		<div class="chat-input">
+			<input type="text" name="" placeholder="Your Message" value="" class="text">
+			<!-- .chat-input-->
+		</div>
+	</div>
+</div>
+<!-- .wrap-->
+<span id="room_name" style="display:none">Public</span>
+<span id="username" style="display:none">sumukhsridhara</span>
+<span id="provider" style="display:none">twitter</span>
+<script defer="" src="./assets/jquery.fancybox.pack.js"></script>
+<script defer="" src="./assets/plugins.js"></script>
+<script defer="" src="./assets/ICanHaz.min.js"></script>
+</script>
+<script defer="" src="./assets/script.js"></script>
+<script>
+
+
+  // Get a reference to the root of the chat data.
+  var roomListRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/');
+  var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/public');
+
+
+	var baseURL = 'https://kpg18lw7x0v.firebaseio-demo.com/rooms/';
+	var currentRoom = 'public';
+
+  var roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
+
+var choosenName = gen_name();
+$('.username').html('<b></b>'+choosenName)
+var idNumber = Math.floor((Math.random()*10000)+1);
+
+
+  // When the user presses enter on the message input, write the message to firebase.
+
+  // Add a callback that is triggered for each NEW ROOM
+roomListRef.on('value', function (snapshot) {
+  var message = snapshot.val();
+
+
+var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber,connected: 'yes'});
+var disconn = new Firebase(newuserpush.toString())
+disconn.onDisconnect().remove();
+
+roomUsersRef.on("value", function(snapshot) {
+		$('.people').html('');
+
+	for (object in snapshot.val()){
+		add_people(snapshot.child(object).val().name);
+		console.log(snapshot.child(object).val().name);
+	}
+});
+
+
+	var roomList = '';
+	for (var key in snapshot.val()) {
+		if (key == currentRoom) {
+			roomList = roomList + '<a href="#' + key + '" title="' + key + '" class="option current">' + key + '</a>';
+		}
+		else {
+			roomList = roomList + '<a href="#' + key + '" title="' + key + '" class="option">' + key + '</a>';
+		}
+	}
+	//console.log(roomList);
+	//console.log(snapshot.child('yahoo').name());
+	document.getElementById('list').innerHTML = roomList;
+	  $('.list a').click(function(){
+	      $('.list a').removeClass('current')
+	      var roomname = $(this).attr("title");
+	      $('.currroom').text(roomname)
+	      console.log("clicked" + roomname)
+	      changeRoom(roomname)
+      $(this).addClass('current');
+  });
+
+  });
+/*
+currentRoomRef.on('value', function (snapshot) {
+  var messages = snapshot.val();
+  console.log("CURRENT ROOM REF ON CALLED");
+  console.log(messages)
+ // for (var key in messages) {
+  //	displayChatMessage(key.name,messages.text);
+  //}
+  //console.log(typeof(snapshot.val()));
+});
+*/ 
+
+currentRoomRef.on('child_added', function (snapshot) {
+  var messages = snapshot.val();
+	console.log('Child Added '+messages.text)
+  displayChatMessage(messages.name,messages.text);
+  /*
+  for (var key in snapshot.val()) {
+    //displayChatMessage(key,messages[key]);
+    displayChatMessage(key.name,key.text);
+    console.log(key[name]);
+  }
+  */
+});
+
+
+
+  function displayChatMessage(name, text) {
+
+//CLEAR MESSAGE BOX
+
+	add_message(name,text,'10 AM');
+ //   $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+  //  $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+  };
+
+/*  $('#roomList').change(function() {
+  	console.log("changed to room: " + $("#roomList option:selected").text());
+  	currentRoom = $("#roomList option:selected").text();
+  	currentRoomRef = new Firebase(baseURL + currentRoom);
+    //console.log(currentRoomRef);
+
+  //clear message box
+}); */ 
+
+  function changeRoom(roomid){
+  	 console.log("changed to room: " + roomid);
+  	currentRoom = roomid;
+  	delete_current_room();
+  	currentRoomRef = new Firebase(baseURL + currentRoom);
+  	roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
+    $('.list a').removeClass('current')
+    $('.currroom').text(roomid)
+    $("select[title='"+roomid+"']").addClass('current')
+  	roomUsersRef.push({name:choosenName, id:idNumber});
+
+	currentRoomRef.on('child_added', function (snapshot) {
+	  var messages = snapshot.val();
+	  displayChatMessage(messages.name,messages.text);
+	  $('.dropdown-options').css('display', 'none');
+	  /*
+	  for (var key in snapshot.val()) {
+	    //displayChatMessage(key,messages[key]);
+	    displayChatMessage(key.name,key.text);
+	    console.log(key[name]);
+	  }
+	  */
+	});
+
+  }
+  function delete_current_room(){
+  	$('.chat-box').remove();
+  }
+</script>
+	<script>
+	$(document).ready(function(){
+
+  $('.list a').click(function(){
+      $('.list a').removeClass('current')
+      var roomname = $(this).attr("title");
+      $('.currroom').text(roomname)
+      console.log(roomname)
+      changeRoom(roomname)
+      $(this).addClass('current');
+  });
+
+});
+	</script>
+
+<script id="hiddenlpsubmitdiv" style="display: none;"></script>
+</body>
+</html>
