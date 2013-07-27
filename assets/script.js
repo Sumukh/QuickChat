@@ -233,8 +233,13 @@ $(function() {
   $(".chat-input input").keypress(function(e) {
     var inputText = $(this).val().trim();
     if(e.which == 13 && inputText.length > 0) {
-      console.log(inputText);
-      currentRoomRef.push({name:choosenName, text:inputText});
+      var lt = /</g, 
+    gt = />/g, 
+    ap = /'/g, 
+    ic = /"/g;
+    value = inputText.toString().replace(lt, "&lt;").replace(gt, "&gt;").replace(ap, "&#39;").replace(ic, "&#34;");
+
+      currentRoomRef.push({name:choosenName, text:value, os: gen_name()});
       $('#messageInput').val('');
       $(this).val('');
       return false;

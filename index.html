@@ -49,13 +49,14 @@ $(document).ready(function(){
   })
 });
 function change_name(name){
-	var choosenName = name;
+ choosenName = name;
   $('.username').html('<b></b>'+name);
 }
 
 
 function add_message(name,message,time){
 	if (message.length > 0) { 
+
 $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="./assets/sumukhsridhara.png"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
     $('.chat').scrollTop($('.chat').prop('scrollHeight'));
 
