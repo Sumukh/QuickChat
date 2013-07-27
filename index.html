@@ -211,7 +211,7 @@ roomListRef.on('value', function (snapshot) {
   var message = snapshot.val();
 
 
-var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber);
+var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
 var disconn = new Firebase(newuserpush.toString())
 disconn.onDisconnect().remove();
 
@@ -301,7 +301,7 @@ currentRoomRef.on('child_added', function (snapshot) {
     $('.list a').removeClass('current')
     $('.currroom').text(roomid)
     $("select[title='"+roomid+"']").addClass('current')
-	var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber);
+	var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
 	var disconn = new Firebase(newuserpush.toString())
 	disconn.onDisconnect().remove();
 
