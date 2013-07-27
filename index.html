@@ -33,6 +33,8 @@ if (navigator.appVersion.indexOf("Win")!=-1) OSName="Win";
 if (navigator.appVersion.indexOf("Mac")!=-1) OSName="Mac";
 if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+if (navigator.appVersion.indexOf("iPhone")!=-1) OSName="iPhone"; // Is this the right indexOf(thing)?
+if (navigator.appVersion.indexOf("iPad")!=-1) OSName="iPad";
 var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
 var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
@@ -66,7 +68,8 @@ function add_message(name,message,time, os){
 		case "Mac": filepath = "./assets/apple.png"; break; 
 		case "Win": filepath = "./assets/microsoft.png"; break; 
 		case "Linux": filepath = "./assets/linux.png"; break;
-		case "iPhone": filepath = "./assets/iPhone.png"; break;
+		case "iPhone": filepath = "./assets/iphone.png"; break;
+		case "iPad": filepath = "./assets/ipad.png"; break;
 	}
 $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="' + filepath + '"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
 
