@@ -28,12 +28,19 @@ filepicker.setKey('A8DzaXu8nS9KQdYVqgxljz');
 
 <script> 
 function gen_name(){ 
-var OSName="Unknown OS";
+var OSName="Unknown";
 if (navigator.appVersion.indexOf("Win")!=-1) OSName="Win";
-if (navigator.appVersion.indexOf("Mac")!=-1) OSName="Mac";
+if (navigator.appVersion.indexOf("Mac")!=-1) {OSName="Mac"};
+if (navigator.appVersion.indexOf("iPhone")!=-1) {$('.leftsidebar').css('width','100px'); $('.dropdown-room').css('width','130px'); $('.dropdown-status').css('width','130px'); OSName="iPhone";}
 if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+<<<<<<< HEAD
+var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Sumukh", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
+=======
+if (navigator.appVersion.indexOf("iPhone")!=-1) OSName="iPhone"; // Is this the right indexOf(thing)?
+if (navigator.appVersion.indexOf("iPad")!=-1) OSName="iPad";
 var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
+>>>>>>> 0b596052e883c40d41bb64440cf436e2e528e810
 var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
 
@@ -65,7 +72,9 @@ function add_message(name,message,time, os){
 	switch(os) {
 		case "Mac": filepath = "./assets/apple.png"; break; 
 		case "Win": filepath = "./assets/microsoft.png"; break; 
-		case "Linux": filepath = "./assets/linux.png"; break; 
+		case "Linux": filepath = "./assets/linux.png"; break;
+		case "iPhone": filepath = "./assets/iphone.png"; break;
+		case "iPad": filepath = "./assets/ipad.png"; break;
 	}
 $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="' + filepath + '"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
 
@@ -101,7 +110,7 @@ function add_people(name){
 		</div>
 	</div>
 
-<div class="dropdown dropdown-room"><i></i><a href="#" id="currentroom" class="selected currroom">PUBLIC</a>
+<div class="dropdown dropdown-room" id="dropdown"><i></i><a href="#" id="currentroom" class="selected currroom">PUBLIC</a>
 
 	<div class="dropdown-options"><div class="triangle"></div>
 
@@ -152,8 +161,8 @@ function add_people(name){
 	<a href="#" style="display:none;" class="button-circle lock"><strong><span><i></i></span></strong>
 	</a>
 	</header>
-	<sidebar>
-	<div class="online">
+	<sidebar class="leftsidebar">
+	<div class="online" style="overflow:auto;">
 		<h4 class="inner-padding">ONLINE</h4>
 		<div class="people">
 		</div>
@@ -173,7 +182,7 @@ function add_people(name){
 		<!-- .files-container -->
 	</div>
 	<!-- .files -->
-	<a href="https://github.com/gravityonmars/Balloons.IO" target="_blank" class="sidebar-open-source">Open Source</a>
+	<a href="https://github.com/Sumukh/QuickChat" target="_blank" class="sidebar-open-source">Open Source</a>
 	</sidebar>
 	<div role="main" class="content">
 		<div class="chat">
@@ -193,7 +202,8 @@ function add_people(name){
 		</div>
 		<div class="line-chat second">
 		</div>
-		<div class="chat-input">
+		<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+		<div class="chat-input" id="chat-input">
 			<input type="text" name="" placeholder="Your Message" value="" class="text">
 			<!-- .chat-input-->
 		</div>
