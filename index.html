@@ -18,7 +18,7 @@
 
 </style>
   <script src="https://cdn.firebase.com/v0/firebase.js"></script>
-<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+<script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>
 
 <script>
 filepicker.setKey('A8DzaXu8nS9KQdYVqgxljz');
@@ -34,13 +34,11 @@ if (navigator.appVersion.indexOf("Mac")!=-1) {OSName="Mac"};
 if (navigator.appVersion.indexOf("iPhone")!=-1) {$('.leftsidebar').css('width','100px'); $('.dropdown-room').css('width','130px'); $('.dropdown-status').css('width','130px'); OSName="iPhone";}
 if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
-<<<<<<< HEAD
 var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Sumukh", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
-=======
 if (navigator.appVersion.indexOf("iPhone")!=-1) OSName="iPhone"; // Is this the right indexOf(thing)?
 if (navigator.appVersion.indexOf("iPad")!=-1) OSName="iPad";
 var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
->>>>>>> 0b596052e883c40d41bb64440cf436e2e528e810
+
 var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
 
@@ -169,10 +167,6 @@ function add_people(name){
 		<h3>Files</h3>
 		<div class="files-container">
 			<a href="#" class="file" onclick="filepicker.pick(function(InkBlob){console.log(InkBlob.url); fileuploaded(InkBlob.filename,InkBlob.url)});"> <span><i></i></span>UPLOAD A FILE</a>
-			<a href="#" class="picture"><span><i></i></span>filename-example.dmg</a>
-			<a href="#" class="file"><span><i></i></span>filename-example.dmg</a>
-			<a href="#" class="picture"><span><i></i></span>filename-example.dmg</a>
-			<a href="#" class="file"><span><i></i></span>filename-example.dmg</a>
 		</div>
 		<!-- .files-container -->
 	</div>
@@ -223,9 +217,29 @@ function add_people(name){
 
   var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/'+currentRoom);
 
-
-
   var roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
+
+  var fileListRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/files/');
+
+function notify() {
+  var havePermission = window.webkitNotifications.checkPermission();
+  if (havePermission == 0) {
+    // 0 is PERMISSION_ALLOWED
+    var notification = window.webkitNotifications.createNotification(
+      'http://i.stack.imgur.com/dmHl0.png',
+      'Chrome notification!',
+      'Here is the notification text'
+    );
+
+    notification.onclick = function () {
+      window.open("http://stackoverflow.com/a/13328397/1269037");
+      notification.close();
+    }
+    notification.show();
+  } else {
+      window.webkitNotifications.requestPermission();
+  }
+}  
 
 var choosenName = gen_name();
 $('.username').html('<b></b>'+choosenName)
@@ -299,10 +313,18 @@ currentRoomRef.on('child_added', function (snapshot) {
 });
 
 function fileuploaded(name,url){
-
-
+console.log(name + url);
+fileListRef.push({name:name, url:url});
 }
 
+fileListRef.on("value", function (snapshot) {
+	console.log(snapshot.val());
+  for (object in snapshot.val()){
+		console.log(snapshot.child(object).val().name);
+		console.log(snapshot.child(object).val().url);
+		$('.files-container').append('<a href="#" target='+snapshot.child(object).val().url+'class="file" ;"> <span><i></i></span>'+snapshot.child(object).val().name+'</a>');
+	}
+});
 
 
   function displayChatMessage(name, text,time,os) {
@@ -421,4 +443,7 @@ getCoordinates()
 
 <script id="hiddenlpsubmitdiv" style="display: none;"></script>
 </body>
+<div style="width: 300px; height: 300px; background: yellow" onclick="notify()">
+Cick here to notify
+</div>
 </html>
