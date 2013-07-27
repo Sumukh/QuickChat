@@ -28,7 +28,7 @@ if (navigator.appVersion.indexOf("Win")!=-1) OSName="Win";
 if (navigator.appVersion.indexOf("Mac")!=-1) OSName="Mac";
 if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
-var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Wild Sumukh", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
+var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
 var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
 
@@ -36,7 +36,6 @@ return username;
 function change_name(name){
 	var choosenName = name;
 	$('.username').html('<b></b>'+name)
-
 }
 
 
@@ -315,7 +314,9 @@ currentRoomRef.on('child_added', function (snapshot) {
   	console.log("changed to room: " + roomid);
   	currentRoom = roomid;
   	delete_current_room();
+  	currentRoomRef.off();
   	disconn.remove();
+  	var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/'+currentRoom);
 
 
   	roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
@@ -334,19 +335,19 @@ currentRoomRef.on('child_added', function (snapshot) {
     $('.list a').removeClass('current')
     $('.currroom').text(roomid)
     $("select[title='"+roomid+"']").addClass('current')
+currentRoomRef.on('child_added', function (snapshot) {
+  var messages = snapshot.val();
+	console.log('Child Added '+messages.text)
+  displayChatMessage(messages.name,messages.text);
+  /*
+  for (var key in snapshot.val()) {
+    //displayChatMessage(key,messages[key]);
+    displayChatMessage(key.name,key.text);
+    console.log(key[name]);
+  }
+  */
+});
 
-	currentRoomRef.on('child_added', function (snapshot) {
-	  var messages = snapshot.val();
-	  displayChatMessage(messages.name,messages.text);
-	  $('.dropdown-options').css('display', 'none');
-	  /*
-	  for (var key in snapshot.val()) {
-	    //displayChatMessage(key,messages[key]);
-	    displayChatMessage(key.name,key.text);
-	    console.log(key[name]);
-	  }
-	  */
-	});
 
   }
   function delete_current_room(){
