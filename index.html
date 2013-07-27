@@ -14,6 +14,8 @@
 <link rel="stylesheet" href="./assets/jquery.fancybox.css">
 <link rel="stylesheet" href="./assets/style.css">
 <script src="./assets/jquery.min.js"></script>
+<script src="./assets/autolink.js"></script>
+
 <style type="text/css">
 
 </style>
@@ -74,7 +76,7 @@ function add_message(name,message,time, os){
 		case "iPhone": filepath = "./assets/iphone.png"; break;
 		case "iPad": filepath = "./assets/ipad.png"; break;
 	}
-$('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="' + filepath + '"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
+$('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="' + filepath + '"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message.autoLink()+'</p></div>');
 
     $('.chat').scrollTop($('.chat').prop('scrollHeight'));
 
