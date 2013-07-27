@@ -18,7 +18,7 @@
 
 </style>
   <script src="https://cdn.firebase.com/v0/firebase.js"></script>
-<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+<script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>
 
 <script>
 filepicker.setKey('A8DzaXu8nS9KQdYVqgxljz');
@@ -34,13 +34,9 @@ if (navigator.appVersion.indexOf("Mac")!=-1) {OSName="Mac"};
 if (navigator.appVersion.indexOf("iPhone")!=-1) {$('.leftsidebar').css('width','100px'); $('.dropdown-room').css('width','130px'); $('.dropdown-status').css('width','130px'); OSName="iPhone";}
 if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
-<<<<<<< HEAD
-var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Sumukh", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
-=======
 if (navigator.appVersion.indexOf("iPhone")!=-1) OSName="iPhone"; // Is this the right indexOf(thing)?
 if (navigator.appVersion.indexOf("iPad")!=-1) OSName="iPad";
 var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
->>>>>>> 0b596052e883c40d41bb64440cf436e2e528e810
 var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
 
@@ -197,7 +193,7 @@ function add_people(name){
 		</div>
 		<div class="line-chat second">
 		</div>
-		<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
+		<script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>
 		<div class="chat-input" id="chat-input">
 			<input type="text" name="" placeholder="Your Message" value="" class="text">
 			<!-- .chat-input-->
