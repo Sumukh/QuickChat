@@ -65,7 +65,8 @@ function add_message(name,message,time, os){
 	switch(os) {
 		case "Mac": filepath = "./assets/apple.png"; break; 
 		case "Win": filepath = "./assets/microsoft.png"; break; 
-		case "Linux": filepath = "./assets/linux.png"; break; 
+		case "Linux": filepath = "./assets/linux.png"; break;
+		case "iPhone": filepath = "./assets/iPhone.png"; break;
 	}
 $('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="' + filepath + '"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
 
