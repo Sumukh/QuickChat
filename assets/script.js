@@ -251,7 +251,7 @@ nowtime = hours + ":" + minutes + "PM"
 nowtime = hours + ":" + minutes + "AM"
 }
 
-      currentRoomRef.push({name:choosenName, text:value, time:nowtime , os: gen_name()});
+      currentRoomRef.push({name:choosenName, text:value, time:nowtime , os: osname()});
       $('#messageInput').val('');
       $(this).val('');
       return false;
