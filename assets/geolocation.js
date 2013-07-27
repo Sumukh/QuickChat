@@ -5,7 +5,7 @@ function errorHandler(err) {
       console.log("Error: Position is unavailable!");
       $.get("http://ipinfo.io", function(response) {
     console.log(response.ip);
-    changeRoom(response.ip);
+    changeRoom(response.ip.split(".").join("_"));
       }, "jsonp");
 
   }
