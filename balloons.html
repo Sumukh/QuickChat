@@ -190,19 +190,19 @@ function add_people(name){
 
 
   // Get a reference to the root of the chat data.
-  var roomListRef = new Firebase('https://quickchat.firebaseio-demo.com/rooms/');
-  var currentRoomRef = new Firebase('https://quickchat.firebaseio-demo.com/rooms/public');
+  var roomListRef = new Firebase('https://u93m32c51x5.firebaseio-demo.com/rooms/');
+  var currentRoomRef = new Firebase('https://u93m32c51x5.firebaseio-demo.com/rooms/public');
 
 
-	var baseURL = 'https://quickchat.firebaseio-demo.com/rooms/';
+	var baseURL = 'https://u93m32c51x5.firebaseio-demo.com/rooms/';
 	var currentRoom = 'public';
 
-  var roomUsersRef = new Firebase('https://quickchat.firebaseio-demo.com/users/' + currentRoom);
+  var roomUsersRef = new Firebase('https://u93m32c51x5.firebaseio-demo.com/users/' + currentRoom);
 
 var choosenName = gen_name();
 $('.username').html('<b></b>'+choosenName)
 var idNumber = Math.floor((Math.random()*10000)+1);
-
+var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
 
   // When the user presses enter on the message input, write the message to firebase.
 
@@ -210,8 +210,8 @@ var idNumber = Math.floor((Math.random()*10000)+1);
 roomListRef.on('value', function (snapshot) {
   var message = snapshot.val();
 
+console.log('push new user');
 
-var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber,connected: 'yes'});
 var disconn = new Firebase(newuserpush.toString())
 disconn.onDisconnect().remove();
 
@@ -297,7 +297,7 @@ currentRoomRef.on('child_added', function (snapshot) {
   	currentRoom = roomid;
   	delete_current_room();
   	currentRoomRef = new Firebase(baseURL + currentRoom);
-  	roomUsersRef = new Firebase('https://quickchat.firebaseio-demo.com/users/' + currentRoom);
+  	roomUsersRef = new Firebase('https://u93m32c51x5.firebaseio-demo.com/' + currentRoom);
     $('.list a').removeClass('current')
     $('.currroom').text(roomid)
     $("select[title='"+roomid+"']").addClass('current')
