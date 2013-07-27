@@ -198,7 +198,7 @@ roomListRef.on('value', function (snapshot) {
   });
 
   });
-
+/*
 currentRoomRef.on('value', function (snapshot) {
   var messages = snapshot.val();
   console.log("CURRENT ROOM REF ON CALLED");
@@ -208,6 +208,7 @@ currentRoomRef.on('value', function (snapshot) {
   //}
   //console.log(typeof(snapshot.val()));
 });
+*/ 
 
 currentRoomRef.on('child_added', function (snapshot) {
   var messages = snapshot.val();
@@ -247,14 +248,18 @@ currentRoomRef.on('child_added', function (snapshot) {
   	currentRoom = roomid;
   	delete_current_room();
   	currentRoomRef = new Firebase(baseURL + currentRoom);
-  	currentRoomRef.on('value', function (snapshot) {
-  	var messages = snapshot.val();
-  console.log(messages);
-	  for (var messages in snapshot.val()) {
-	  	displayChatMessage(messages.name,messages.text);
+	currentRoomRef.on('child_added', function (snapshot) {
+	  var messages = snapshot.val();
+	  displayChatMessage(messages.name,messages.text);
+	  $('.dropdown-options').css('display', 'none');
+	  /*
+	  for (var key in snapshot.val()) {
+	    //displayChatMessage(key,messages[key]);
+	    displayChatMessage(key.name,key.text);
+	    console.log(key[name]);
 	  }
-  //console.log(typeof(snapshot.val()));
-});
+	  */
+	});
 
   }
   function delete_current_room(){
