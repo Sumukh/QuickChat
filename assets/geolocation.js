@@ -18,6 +18,7 @@ function foursquare(data) {
   var name = data.response.venues[0].name;
   var venuesid = data.response.venues[0].id;
   changeRoom(name);
+  console.log('SHOULD BE CHANGING ROOM')
   console.log(data.response.venues[0].name); console.log(data.response.venues[0].id); 
 } 
 
