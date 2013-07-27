@@ -6,6 +6,7 @@ function errorHandler(err) {
   }
 }
 function getCoordinates(callback){
+  debugger
   if (navigator.geolocation){
       navigator.geolocation.getCurrentPosition(function(position){
         console.log(position);
