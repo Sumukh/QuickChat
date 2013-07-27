@@ -266,7 +266,7 @@ currentRoomRef.on('value', function (snapshot) {
 currentRoomRef.on('child_added', function (snapshot) {
   var messages = snapshot.val();
 	console.log('Child Added '+messages.text)
-  displayChatMessage(messages.name,messages.text);
+  displayChatMessage(messages.name,messages.text,messages.time,messages.os);
   /*
   for (var key in snapshot.val()) {
     //displayChatMessage(key,messages[key]);
@@ -278,11 +278,11 @@ currentRoomRef.on('child_added', function (snapshot) {
 
 
 
-  function displayChatMessage(name, text) {
+  function displayChatMessage(name, text,time,os) {
 
 //CLEAR MESSAGE BOX
 
-	add_message(name,text,'10 AM');
+	add_message(name,text,time,os);
  //   $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
   //  $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
   };
@@ -320,7 +320,7 @@ $('.dropdown-options').css('display','none')
 currentRoomRef.on('child_added', function (snapshot) {
   var messages = snapshot.val();
 	console.log('Child Added '+messages.text)
-  displayChatMessage(messages.name,messages.text);
+  displayChatMessage(messages.name,messages.text,messages.time,messages.os);
 });
 	roomUsersRef.on("value", function(snapshot) {
 			$('.people').html(' ');
