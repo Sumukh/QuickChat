@@ -1,0 +1,47 @@
+<script src="https://cdn.firebase.com/v0/firebase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+
+<!-- Download from https://github.com/firebase/Firechat -->
+<link rel="stylesheet" href="firechat-default.min.css" />
+<script src="firechat-default.min.js"></script>
+
+<div class="status"></div>
+<form id="login_form">
+  <input type="text" name="email" placeholder="email">
+  <input type="text" name="password" placeholder="password">
+  <input type="text" name="username" placeholder="preferred username">
+  <button id="login"> Login </button>
+  <button id="logout"> Logout </button>
+</form>
+<div id="firechat-wrapper">
+</div>
+<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase-simple-login.js'></script>
+<script type='text/javascript'>
+  var dataRef = new Firebase('https://gelato.firebaseio.com/');
+  var chatRef = new Firebase('https://gelato.firebaseio.com/chat');
+  var chat = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
+  var $status = $(".status");
+  var auth = new FirebaseSimpleLogin(chatRef, function(error, user) {
+    if (error){
+        $status.text("Error");
+    } else if (user){
+        chat.setUser(user.id, $("input[name=username]").val() || $("input[name=email]").val() );
+        $status.text("Logged in");
+        $('#login_form')[0].reset();
+    } else {
+        $status.text("Login to get started!");
+    }
+  });
+  $("#login").click(function(e){
+      e.preventDefault();
+      auth.login('password', {
+        email: $("input[name=email]").val(),
+        password:  $("input[name=password]").val(),
+    })
+  $("#logout").click(function(){
+    dataRef.unauth();
+    $status.text("Logged out");
+  })
+
+  });
+</script>
