@@ -16,7 +16,8 @@
 <script src="./assets/jquery.min.js"></script>
 <script src="./assets/jquery.cookie.js"></script>
 <script src="./assets/autolink.js"></script>
-
+<script src="./assets/notifyG-1.0.0.js"></script>
+ 
 <style type="text/css">
 
 </style>
@@ -95,14 +96,13 @@ function add_message(name,message,time, os){
 		case "iPhone": filepath = "./assets/iphone.png"; break;
 		case "iPad": filepath = "./assets/ipad.png"; break;
 	}
-
   var old_names = $.cookie("old_names") && $.cookie("old_names").split(',');
   var old_names = old_names || [];
   if($.inArray(name, old_names) > 0 || name == $.cookie("user_name") ){
     name = $.cookie("user_name") || name;
   }
   id = $.cookie("user_id");
-$('.chat .current').append('<div data-user="'+name+'" + data-user-id="'+id+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="'+filepath+'"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
+$('.chat .current').append('<div data-user="'+name+'" + data-user-id="'+id+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="'+filepath+'"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message.autoLink()+'</p></div>');
     $('.chat').scrollTop($('.chat').prop('scrollHeight'));
 
 	}
@@ -206,7 +206,7 @@ function add_people(id, name){
 		<!-- .files-container -->
 	</div>
 	<!-- .files -->
-	<a href="https://github.com/Sumukh/QuickChat" target="_blank" class="sidebar-open-source">Open Source</a>
+	<a href="https://github.com/Sumukh/QuickChat" target="_blank" class="sidebar-open-source">Open Source</a> - <a href="#" onclick="notifyG.permission()" class="sidebar-open-source"> Click Here to get Chrome Notifications</a>
 	</sidebar>
 	<div role="main" class="content">
 		<div class="chat">
@@ -217,7 +217,7 @@ function add_people(id, name){
 			<div class="current">
 				<!--current submits-->
 				<div data-user="sumukhsridhara" class="notice chat-box">
-					You have joined the chat room. Type in some text
+					You have joined the chat room. Type in some text 
 				</div>
 			</div>
 		</div>
@@ -317,10 +317,14 @@ currentRoomRef.on('value', function (snapshot) {
   //console.log(typeof(snapshot.val()));
 });
 */ 
+var firstload = 1; 
+console.log(firstload);
 
 currentRoomRef.on('child_added', function (snapshot) {
   var messages = snapshot.val();
 	console.log('Child Added '+messages.text)
+
+
   displayChatMessage(messages.name,messages.text,messages.time,messages.os);
   /*
   for (var key in snapshot.val()) {
@@ -330,6 +334,7 @@ currentRoomRef.on('child_added', function (snapshot) {
   }
   */
 });
+
 
 function fileuploaded(name,url){
 console.log(name + url);
@@ -342,6 +347,7 @@ fileListRef.on("value", function (snapshot) {
 		console.log(snapshot.child(object).val().name);
 		console.log(snapshot.child(object).val().url);
 		$('.files-container').append('<a href='+snapshot.child(object).val().url+' target="_blank" class="file"> <span><i></i></span>'+snapshot.child(object).val().name+'</a>');
+		notifyG.create('http://yoloco.tk/assets/cinema.png', 'New File Added', snapshot.child(object).val().name)
 	}
 });
 
