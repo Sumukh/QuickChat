@@ -238,8 +238,20 @@ $(function() {
     ap = /'/g, 
     ic = /"/g;
     value = inputText.toString().replace(lt, "&lt;").replace(gt, "&gt;").replace(ap, "&#39;").replace(ic, "&#34;");
+var currentTime = new Date()
+var hours = currentTime.getHours()
+var minutes = currentTime.getMinutes()
+var now = 'Recently'
+if (minutes < 10){
+minutes = "0" + minutes
+}
+if(hours > 11){
+nowtime = hours + ":" + minutes + "PM"
+} else {
+nowtime = hours + ":" + minutes + "AM"
+}
 
-      currentRoomRef.push({name:choosenName, text:value, os: gen_name()});
+      currentRoomRef.push({name:choosenName, text:value, time:nowtime , os: gen_name()});
       $('#messageInput').val('');
       $(this).val('');
       return false;

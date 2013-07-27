@@ -569,7 +569,6 @@ sidebar div.online {
 }
 sidebar div.files {
   height: 18%;
-  display: none;
 }
 sidebar div.online .people a {
   display: block;
