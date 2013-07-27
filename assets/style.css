@@ -565,7 +565,7 @@ sidebar div.online .people a {
 }
 sidebar div.online {
   overflow: hidden;
-  height: 100%;
+  height: 50%;
 }
 sidebar div.files {
   height: 18%;
