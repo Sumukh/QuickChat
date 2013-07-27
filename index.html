@@ -41,9 +41,16 @@ if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
 return OSName;
 }
+$(document).ready(function(){
+  $("#nameForm").submit(function(e){
+    e.preventDefault();
+    change_name($("#customusername").val());
+    $(".dropdown a.selected").removeClass("active").next(".dropdown-options").hide();
+  })
+});
 function change_name(name){
 	var choosenName = name;
-	$('.username').html('<b></b>'+name)
+  $('.username').html('<b></b>'+name);
 }
 
 
@@ -71,7 +78,7 @@ function add_people(name){
 		<div class="dropdown-options">
 			<div class="triangle">
 			</div>
-			<form name="nameForm" id="nameForm"	 onclick="change_name(document.getElementById('customusername').value);" >
+			<form name="nameForm" id="nameForm">
 						<a href="#" class="option create-room">Change your name</a>
 			<input type="text" name="room_name" id="customusername" value="" placeholder="Your Name" style="display: none" class="text">
 			</form>
