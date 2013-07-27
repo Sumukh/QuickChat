@@ -18,7 +18,12 @@
 
 </style>
   <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+<script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>
 
+<script>
+filepicker.setKey('A8DzaXu8nS9KQdYVqgxljz');
+
+</script>
 <script src="./assets/modernizr-2.5.3.min.js"></script>
 
 <script> 
@@ -154,6 +159,7 @@ function add_people(name){
 	<div class="files">
 		<h3>Files</h3>
 		<div class="files-container">
+			<a href="#" class="file" onclick="filepicker.pick(function(InkBlob){console.log(InkBlob.url); fileuploaded(InkBlob.filename,InkBlob.url)});"> <span><i></i></span>UPLOAD A FILE</a>
 			<a href="#" class="picture"><span><i></i></span>filename-example.dmg</a>
 			<a href="#" class="file"><span><i></i></span>filename-example.dmg</a>
 			<a href="#" class="picture"><span><i></i></span>filename-example.dmg</a>
@@ -281,6 +287,11 @@ currentRoomRef.on('child_added', function (snapshot) {
   }
   */
 });
+
+function fileuploaded(name,url){
+
+
+}
 
 
 
