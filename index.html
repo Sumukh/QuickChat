@@ -50,36 +50,6 @@ function add_people(name){
 	$('.people').append('<a href="#" data-username="'+name+'" data-provider="twitter" class="available"><b></b>'+name+'</a>');
 }
 
-function errorHandler(err) {
-    if(err.code == 1) {
-      console.log("Error: Access is denied!");
-    }else if( err.code == 2) {
-      console.log("Error: Position is unavailable!");
-      $.get("http://ipinfo.io", function(response) {
-      console.log(response.ip);
-      changeRoom(response.ip.split(".").join("_"));
-        }, "jsonp");
-
-  }
-}
-function getCoordinates(callback){
-  if (navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(function(position){
-        console.log(position);
-        $.get('https://api.foursquare.com/v2/venues/search?ll='+position.coords.latitude+','+position.coords.longitude+'&oauth_token=FYQ2RTFDZSS4PGH2QDQ5EMVU4HYLWBCZR02UMZIJ5P1CCIEU&v=20130727',foursquare)
-        return position;
-      }, errorHandler);
-  }
-}
-function foursquare(data) { 
-  var name = data.response.venues[0].name;
-  var venuesid = data.response.venues[0].id;
-  changeRoom(name);
-  console.log('SHOULD BE CHANGING ROOM')
-  console.log(data.response.venues[0].name); console.log(data.response.venues[0].id); 
-} 
-getCoordinates()
-
 </script>
 </head>
 <body class="fancy-theme">
@@ -104,7 +74,7 @@ getCoordinates()
 		</div>
 	</div>
 
-<div class="dropdown dropdown-room"><i></i><a href="#" id="currentroom" class="selected currroom">Loading</a>
+<div class="dropdown dropdown-room"><i></i><a href="#" id="currentroom" class="selected currroom">PUBLIC</a>
 
 	<div class="dropdown-options"><div class="triangle"></div>
 
@@ -312,17 +282,26 @@ currentRoomRef.on('child_added', function (snapshot) {
 
   function changeRoom(roomid){
   	console.log("changed to room: " + roomid);
+  	 delete_current_room();
+
   	currentRoom = roomid;
-  	delete_current_room();
-  	currentRoomRef.off();
-  	disconn.remove();
-  	var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/'+currentRoom);
+
+  	//disconn.remove();
+  	console.log("ROOM" + currentRoom)
+  	currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/' + currentRoom);
 
 
   	roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
   	var newuserpush = roomUsersRef.push({name:choosenName, id:idNumber});
 	disconn = new Firebase(newuserpush.toString())
 	disconn.onDisconnect().remove();
+
+
+currentRoomRef.on('child_added', function (snapshot) {
+  var messages = snapshot.val();
+	console.log('Child Added '+messages.text)
+  displayChatMessage(messages.name,messages.text);
+});
 	roomUsersRef.on("value", function(snapshot) {
 			$('.people').html(' ');
 			
@@ -335,24 +314,46 @@ currentRoomRef.on('child_added', function (snapshot) {
     $('.list a').removeClass('current')
     $('.currroom').text(roomid)
     $("select[title='"+roomid+"']").addClass('current')
-currentRoomRef.on('child_added', function (snapshot) {
-  var messages = snapshot.val();
-	console.log('Child Added '+messages.text)
-  displayChatMessage(messages.name,messages.text);
-  /*
-  for (var key in snapshot.val()) {
-    //displayChatMessage(key,messages[key]);
-    displayChatMessage(key.name,key.text);
-    console.log(key[name]);
-  }
-  */
-});
 
+    $(".display-options").css('display','none')
 
   }
   function delete_current_room(){
   	$('.chat-box').remove();
   }
+</script>
+<script>
+
+function errorHandler(err) {
+    if(err.code == 1) {
+      console.log("Error: Access is denied!");
+    }else if( err.code == 2) {
+      console.log("Error: Position is unavailable!");
+      $.get("http://ipinfo.io", function(response) {
+      console.log(response.ip);
+      changeRoom(response.ip.split(".").join("_"));
+        }, "jsonp");
+
+  }
+}
+function getCoordinates(callback){
+  if (navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(position){
+        console.log(position);
+        $.get('https://api.foursquare.com/v2/venues/search?ll='+position.coords.latitude+','+position.coords.longitude+'&oauth_token=FYQ2RTFDZSS4PGH2QDQ5EMVU4HYLWBCZR02UMZIJ5P1CCIEU&v=20130727',foursquare)
+        return position;
+      }, errorHandler);
+  }
+}
+function foursquare(data) { 
+  var name = data.response.venues[0].name;
+  var venuesid = data.response.venues[0].id;
+  changeRoom(name);
+  console.log('SHOULD BE CHANGING ROOM')
+  console.log(data.response.venues[0].name); console.log(data.response.venues[0].id); 
+} 
+getCoordinates()
+
 </script>
 	<script>
 	$(document).ready(function(){
@@ -360,9 +361,11 @@ currentRoomRef.on('child_added', function (snapshot) {
   $('.list a').click(function(){
       $('.list a').removeClass('current')
       var roomname = $(this).attr("title");
-      $('.currroom').text(roomname)
-      console.log(roomname)
-      changeRoom(roomname)
+      $('.currroom').text(roomname);
+       $(".display-options").css('display','none');
+
+      console.log("CLICKED ON" + roomname);
+      changeRoom(roomname);
       $(this).addClass('current');
   });
 
