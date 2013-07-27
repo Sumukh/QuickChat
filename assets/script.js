@@ -239,7 +239,7 @@ $(function() {
 
       currentRoomRef.push({name:name, text:inputText});
       $('#messageInput').val('');
-
+      console.log('saddasd')
       $(this).val('');
 
       return false;
