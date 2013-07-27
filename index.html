@@ -288,6 +288,10 @@ $('.dropdown-options').css('display','none')
 
   	//disconn.remove();
   	console.log("ROOM" + currentRoom)
+  	  	roomUsersRef.off();
+
+  	currentRoomRef.off();
+
   	currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/' + currentRoom);
 
 
