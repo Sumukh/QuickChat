@@ -23,8 +23,11 @@
 
 <script> 
 function add_message(name,message,time){
-$('.chat .current').append('<div data-user="" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="./assets/sumukhsridhara.png"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
+	if (message.length > 0) { 
+$('.chat .current').append('<div data-user="'+name+'" data-provider="twitter" data-type="chat" class="chat-box"><div class="avatar avatar-twitter"><img src="./assets/sumukhsridhara.png"></div><h5>'+name+'</h5><p><span class="date">'+time+'</span>'+message+'</p></div>');
     $('.chat').scrollTop($('.chat').prop('scrollHeight'));
+
+	}
 }
 </script>
 </head>
@@ -35,7 +38,12 @@ $('.chat .current').append('<div data-user="" data-provider="twitter" data-type=
 	<header>
 	<div class="dropdown dropdown-status">
 		<i></i>
-		<a href="#" class="selected available"><b></b>available</a>
+		<a href="#" class="selected available"><b></b><div id='roomList'>
+<select>
+  <option value="hi">Turn on Javascript!</option>
+</select>
+</div>
+</a>
 		<div class="dropdown-options">
 			<div class="triangle">
 			</div>
@@ -47,6 +55,7 @@ $('.chat .current').append('<div data-user="" data-provider="twitter" data-type=
 			</div>
 		</div>
 	</div>
+
 <div class="dropdown dropdown-room"><i></i><a href="#" class="selected">asdasd</a><div class="dropdown-options"><div class="triangle"></div><form method="POST" action="/create"><a href="#" class="option create-room">Create a room</a><input type="text" name="room_name" value="" placeholder="Name of your room" style="display: none" class="text"></form><div class="list"><a href="#" class="option current">asdasd</a><a href="/092385" title="YHack!" class="option">YHack!<span class="dropdown-users-online">0</span></a><a href="/f636a6" title="yhack2" class="option">yhack2<span class="dropdown-users-online">1</span></a></div></div></div>	<!-- .dropdown-room -->
 	<a href="#invite" style="display:none;" class="button-circle invite fancybox"><strong><span><i></i></span></strong>
 	</a>
@@ -161,6 +170,7 @@ var currentRoom = 'public';
   // Add a callback that is triggered for each chat message.
 roomListRef.on('value', function (snapshot) {
   var message = snapshot.val();
+  console.log('test new mesaage');
 
 	var roomList = '<select id="roomList">';
 	for (var key in snapshot.val()) {
@@ -187,6 +197,7 @@ currentRoomRef.on('value', function (snapshot) {
 });
 
 currentRoomRef.on('child_added', function (snapshot) {
+	console.log('CHILD ADDDED BRO')
   var messages = snapshot.val();
   console.log(messages);
   displayChatMessage(messages.name,messages.text);
