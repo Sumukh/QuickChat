@@ -190,14 +190,14 @@ function add_people(name){
 
 
   // Get a reference to the root of the chat data.
-  var roomListRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/');
-  var currentRoomRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/rooms/public');
+  var roomListRef = new Firebase('https://quickchat.firebaseio-demo.com/rooms/');
+  var currentRoomRef = new Firebase('https://quickchat.firebaseio-demo.com/rooms/public');
 
 
-	var baseURL = 'https://kpg18lw7x0v.firebaseio-demo.com/rooms/';
+	var baseURL = 'https://quickchat.firebaseio-demo.com/rooms/';
 	var currentRoom = 'public';
 
-  var roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
+  var roomUsersRef = new Firebase('https://quickchat.firebaseio-demo.com/users/' + currentRoom);
 
 var choosenName = gen_name();
 $('.username').html('<b></b>'+choosenName)
@@ -297,7 +297,7 @@ currentRoomRef.on('child_added', function (snapshot) {
   	currentRoom = roomid;
   	delete_current_room();
   	currentRoomRef = new Firebase(baseURL + currentRoom);
-  	roomUsersRef = new Firebase('https://kpg18lw7x0v.firebaseio-demo.com/users/' + currentRoom);
+  	roomUsersRef = new Firebase('https://quickchat.firebaseio-demo.com/users/' + currentRoom);
     $('.list a').removeClass('current')
     $('.currroom').text(roomid)
     $("select[title='"+roomid+"']").addClass('current')
