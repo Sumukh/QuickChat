@@ -33,13 +33,13 @@ filepicker.setKey('A8DzaXu8nS9KQdYVqgxljz');
 function gen_name(){ 
 var OSName="Unknown";
 if (navigator.appVersion.indexOf("Win")!=-1) OSName="Win";
-if (navigator.appVersion.indexOf("Mac")!=-1) {OSName="Mac"};
-if (navigator.appVersion.indexOf("iPhone")!=-1) {$('.leftsidebar').css('width','100px'); $('.dropdown-room').css('width','130px'); $('.dropdown-status').css('width','130px'); OSName="iPhone";}
+if (navigator.appVersion.indexOf("Mac")!=-1) OSName="Mac";
+if (navigator.appVersion.indexOf("iPhone")!=-1) {$('.leftsidebar').css('width','100px'); $('.dropdown-room').css('width','110px'); $('.dropdown-status').css('width','160px'); $('.content').css('left','101px');OSName="iPhone";}
 if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
 if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
 if (navigator.appVersion.indexOf("iPhone")!=-1) OSName="iPhone"; // Is this the right indexOf(thing)?
 if (navigator.appVersion.indexOf("iPad")!=-1) OSName="iPad";
-var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
+var animals = new Array("Giraffe", "Horse", "Cow", "Chicken", "Pig", "Sheep","Parrot","Zebra", "Parakeet", "Bear", "Panda", "Ox", "Eagle", "Rhino", "Pig", "Sumukh","Seagull", "Salmon", "Tuna", "Human", "Buffalo", "Mosquito", "Cicada", "Dragonfly","Capybara");
 var username = OSName + ' ' + animals[Math.floor(Math.random()*animals.length)]
 return username;
 
@@ -201,7 +201,7 @@ function add_people(id, name){
 	<div class="files">
 		<h3>Files</h3>
 		<div class="files-container">
-			<a href="#" class="file" onclick="filepicker.pick(function(InkBlob){console.log(InkBlob.url); fileuploaded(InkBlob.filename,InkBlob.url)});"> <span><i></i></span>UPLOAD A FILE</a>
+			<a href="#" class="file" onclick="filepicker.pick(function(InkBlob){console.log(InkBlob.url); fileuploaded(InkBlob.filename,InkBlob.url)});"> <i>UPLOAD A FILE</i></a>
 		</div>
 		<!-- .files-container -->
 	</div>
