@@ -435,7 +435,7 @@ function getCoordinates(callback){
   if (navigator.geolocation){
       navigator.geolocation.getCurrentPosition(function(position){
         console.log(position);
-        $.get('https://api.foursquare.com/v2/venues/search?ll='+position.coords.latitude+','+position.coords.longitude+'&oauth_token=FYQ2RTFDZSS4PGH2QDQ5EMVU4HYLWBCZR02UMZIJ5P1CCIEU&v=20130727',foursquare)
+        $.get('https://api.foursquare.com/v2/venues/search?ll='+position.coords.latitude+','+position.coords.longitude+'&client_id=FJY1RM3KJG5GWHOJZESEOCSY2ZZWRPED5TIPFQ4RQQRNEN0T&client_secret=OJVBDGVNBX4JX5G1TT0XNTITX0VO0QV5CF1M03GK52BM414M&v=20130727',foursquare)
         return position;
       }, errorHandler);
   }
